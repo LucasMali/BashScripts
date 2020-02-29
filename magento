@@ -1,0 +1,41 @@
+#!/bin/bash
+
+if [ $# == 0 ]; then
+    echo "Comands are: start, stop, shell, log, dblog, and dir.";
+    exit;
+fi
+
+for arg in "$@"
+do
+    if [ "$arg" == "shell" ]
+    then
+        cd $HOME/Sites/magento/
+        warden shell
+    elif [ "$arg" == "debug" ]
+    then
+        cd $HOME/Sites/magento/
+        warden debug
+    elif [ "$arg" == "log" ]
+    then
+        cd $HOME/Sites/magento/
+        warden env logs --tail 0 -f nginx php-fpm php-debug
+    elif [ "$arg" == "stop" ]
+    then
+        cd $HOME/Sites/magento/
+        warden env stop && warden sync stop 
+    elif [ "$arg" == "start" ]
+    then
+        cd $HOME/Sites/magento/
+        warden env start && warden sync start
+    elif [ "$arg" == "dblog" ]
+    then
+        cd $HOME/Sites/magento/
+        watch -n 3 "warden db connect -A -e 'show processlist'"
+    elif [ "$arg" == "fix" ]; then
+        cp $HOME/Documents/Magento/env $HOME/Sites/magento/.env
+        echo "Fixed the Server";
+    elif [ "$arg" ]; then
+        echo "Invalid command ${arg} given"
+        echo "Comands are: shell, log, stop, start, dblog"
+    fi
+done
