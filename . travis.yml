@@ -1,0 +1,7 @@
+addons:
+    sonarcloud:
+      organization: "lucasmaliszewski"
+      token: $SONAR_TOKEN
+
+script:
+    - sonar-scanner
